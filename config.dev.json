@@ -14,14 +14,14 @@
   "language": "en",
   "notesLanguage": "ISO 639-1 codes: vi, en",
   "nickNameBot": "GoatBot",
-  "prefix": ".",
+  "prefix": "!",
 
   "adminOnly": {
     "enable": false,
     "ignoreCommand": []
   },
 
-  "adminBot": [61574791744025],
+  "adminBot": ["100012345678901"],
 
   "whiteListMode": {
     "enable": false,
@@ -44,11 +44,10 @@
 
   "credentials": {
     "gmailAccount": {
-      "email": "dummy@gmail.com",
-      "clientId": "dummy-client-id",
-      "clientSecret": "dummy-client-secret",
-      "refreshToken": "dummy-refresh-token",
-      "apiKey": "dummy-api-key"
+      "email": "",
+      "clientId": "",
+      "clientSecret": "",
+      "refreshToken": ""
     },
     "gRecaptcha": {
       "siteKey": "",
