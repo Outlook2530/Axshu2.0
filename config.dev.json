@@ -43,13 +43,6 @@
   "timeZone": "Asia/Kolkata",
 
   "credentials": {
-    "gmailAccount": {
-      "email": "",
-      "clientId": "",
-      "clientSecret": "",
-      "refreshToken": "",
-      "apiKey": ""
-    },
     "gRecaptcha": {
       "siteKey": "",
       "secretKey": ""
