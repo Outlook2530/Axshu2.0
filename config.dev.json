@@ -1,44 +1,43 @@
 {
   "facebookAccount": {
-    "email": "",
-    "password": "",
+    "email": "YOUR_FACEBOOK_EMAIL",
+    "password": "YOUR_FACEBOOK_PASSWORD",
     "2FASecret": "",
     "i_user": "",
     "proxy": null,
     "userAgent": "Mozilla/5.0 (Linux; Android 12; M2102J20SG) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.0.0 Mobile Safari/537.36",
     "intervalGetNewCookie": 1440,
-    "notes": "Time in minutes for auto-refreshing cookies. Recommended 1440 (1 day) or 4320 (3 days)."
+    "notes": "Set your Facebook email & password here for auto cookie refresh."
   },
 
   "antiInbox": false,
   "language": "en",
-  "notesLanguage": "Use ISO 639-1 code. Example: en or vi",
+  "notesLanguage": "ISO 639-1 codes: vi, en",
   "nickNameBot": "GoatBot",
   "prefix": ".",
+
   "adminOnly": {
     "enable": false,
     "ignoreCommand": []
   },
+
   "adminBot": [61574791744025],
 
   "whiteListMode": {
     "enable": false,
-    "whiteListIds": [],
-    "notes": "If enabled, only listed IDs can use the bot"
+    "whiteListIds": []
   },
+
   "whiteListModeThread": {
     "enable": false,
-    "whiteListThreadIds": [],
-    "notes": "If enabled, only listed threads can use the bot",
-    "how_it_work": "If both whiteListMode and whiteListModeThread are enabled, bot checks user ID and thread ID."
+    "whiteListThreadIds": []
   },
 
   "database": {
     "type": "sqlite",
     "uriMongodb": "",
     "autoSyncWhenStart": false,
-    "autoRefreshThreadInfoFirstTime": true,
-    "notes": "SQLite is recommended for stability."
+    "autoRefreshThreadInfoFirstTime": true
   },
 
   "timeZone": "Asia/Kolkata",
@@ -46,9 +45,9 @@
   "credentials": {
     "gmailAccount": {
       "email": "",
-      "clientId": "dummy-client-id",
-      "clientSecret": "dummy-client-secret",
-      "refreshToken": "dummy-refresh-token",
+      "clientId": "",
+      "clientSecret": "",
+      "refreshToken": "",
       "apiKey": ""
     },
     "gRecaptcha": {
@@ -75,21 +74,19 @@
 
   "autoRestart": {
     "time": 86400000,
-    "notes": "Bot restarts every 24 hours automatically."
+    "notes": "Auto restart every 24 hours for stability"
   },
 
   "autoUptime": {
     "enable": false,
     "timeInterval": 180,
-    "url": "",
-    "notes": "Keeps bot alive on Glitch/Render/Replit."
+    "url": ""
   },
 
   "autoLoadScripts": {
     "enable": false,
     "ignoreCmds": "",
-    "ignoreEvents": "",
-    "notes": "Automatically reload scripts on change."
+    "ignoreEvents": ""
   },
 
   "autoRefreshFbstate": true,
@@ -150,7 +147,6 @@
     "selfListen": false,
     "selfListenEvent": true,
     "autoMarkDelivery": false,
-    "autoReconnect": true,
-    "notes": "Do not change unless needed."
+    "autoReconnect": true
   }
 }
