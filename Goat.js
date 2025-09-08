@@ -3,18 +3,6 @@
  * ! The source code is written by NTKhang, please don't change the author's name everywhere. Thank you for using
  * ! Official source code: https://github.com/ntkhang03/Goat-Bot-V2
  * ! If you do not download the source code from the above address, you are using an unknown version and at risk of having your account hacked
- *
- * English:
- * ! Please do not change the below code, it is very important for the project.
- * It is my motivation to maintain and develop the project for free.
- * ! If you change it, you will be banned forever
- * Thank you for using
- *
- * Vietnamese:
- * ! Vui lòng không thay đổi mã bên dưới, nó rất quan trọng đối với dự án.
- * Nó là động lực để tôi duy trì và phát triển dự án miễn phí.
- * ! Nếu thay đổi nó, bạn sẽ bị cấm vĩnh viễn
- * Cảm ơn bạn đã sử dụng
  */
 
 process.on('unhandledRejection', error => console.log(error));
@@ -28,7 +16,7 @@ const { execSync } = require('child_process');
 const log = require('./logger/log.js');
 const path = require("path");
 
-process.env.BLUEBIRD_W_FORGOTTEN_RETURN = 0; // Disable warning: "Warning: a promise was created in a handler but was not returned from it"
+process.env.BLUEBIRD_W_FORGOTTEN_RETURN = 0;
 
 function validJSON(pathDir) {
 	try {
@@ -66,54 +54,49 @@ if (config.whiteListMode?.whiteListIds && Array.isArray(config.whiteListMode.whi
 const configCommands = require(dirConfigCommands);
 
 global.GoatBot = {
-	startTime: Date.now() - process.uptime() * 1000, // time start bot (ms)
-	commands: new Map(), // store all commands
-	eventCommands: new Map(), // store all event commands
-	commandFilesPath: [], // [{ filePath: "", commandName: [] }
-	eventCommandsFilesPath: [], // [{ filePath: "", commandName: [] }
-	aliases: new Map(), // store all aliases
-	onFirstChat: [], // store all onFirstChat [{ commandName: "", threadIDsChattedFirstTime: [] }}]
-	onChat: [], // store all onChat
-	onEvent: [], // store all onEvent
-	onReply: new Map(), // store all onReply
-	onReaction: new Map(), // store all onReaction
-	onAnyEvent: [], // store all onAnyEvent
-	config, // store config
-	configCommands, // store config commands
-	envCommands: {}, // store env commands
-	envEvents: {}, // store env events
-	envGlobal: {}, // store env global
-	reLoginBot: function () { }, // function relogin bot, will be set in bot/login/login.js
-	Listening: null, // store current listening handle
-	oldListening: [], // store old listening handle
-	callbackListenTime: {}, // store callback listen 
-	storage5Message: [], // store 5 message to check listening loop
-	fcaApi: null, // store fca api
-	botID: null // store bot id
+	startTime: Date.now() - process.uptime() * 1000,
+	commands: new Map(),
+	eventCommands: new Map(),
+	commandFilesPath: [],
+	eventCommandsFilesPath: [],
+	aliases: new Map(),
+	onFirstChat: [],
+	onChat: [],
+	onEvent: [],
+	onReply: new Map(),
+	onReaction: new Map(),
+	onAnyEvent: [],
+	config,
+	configCommands,
+	envCommands: {},
+	envEvents: {},
+	envGlobal: {},
+	reLoginBot: function () { },
+	Listening: null,
+	oldListening: [],
+	callbackListenTime: {},
+	storage5Message: [],
+	fcaApi: null,
+	botID: null
 };
 
 global.db = {
-	// all data
 	allThreadData: [],
 	allUserData: [],
 	allDashBoardData: [],
 	allGlobalData: [],
 
-	// model
 	threadModel: null,
 	userModel: null,
 	dashboardModel: null,
 	globalModel: null,
 
-	// handle data
 	threadsData: null,
 	usersData: null,
 	dashBoardData: null,
 	globalData: null,
 
 	receivedTheFirstMessage: {}
-
-	// all will be set in bot/login/loadData.js
 };
 
 global.client = {
@@ -138,7 +121,7 @@ const { colors } = utils;
 global.temp = {
 	createThreadData: [],
 	createUserData: [],
-	createThreadDataError: [], // Can't get info of groups with instagram members
+	createThreadDataError: [],
 	filesOfGoogleDrive: {
 		arraybuffer: {},
 		stream: {},
@@ -150,7 +133,6 @@ global.temp = {
 	}
 };
 
-// watch dirConfigCommands file and dirConfig
 const watchAndReloadConfig = (dir, type, prop, logName) => {
 	let lastModified = fs.statSync(dir).mtimeMs;
 	let isFirstModified = true;
@@ -159,15 +141,12 @@ const watchAndReloadConfig = (dir, type, prop, logName) => {
 		if (eventType === type) {
 			const oldConfig = global.GoatBot[prop];
 
-			// wait 200ms to reload config
 			setTimeout(() => {
 				try {
-					// if file change first time (when start bot, maybe you know it's called when start bot?) => not reload
 					if (isFirstModified) {
 						isFirstModified = false;
 						return;
 					}
-					// if file not change => not reload
 					if (lastModified === fs.statSync(dir).mtimeMs) {
 						return;
 					}
@@ -193,10 +172,8 @@ global.GoatBot.envGlobal = global.GoatBot.configCommands.envGlobal;
 global.GoatBot.envCommands = global.GoatBot.configCommands.envCommands;
 global.GoatBot.envEvents = global.GoatBot.configCommands.envEvents;
 
-// ———————————————— LOAD LANGUAGE ———————————————— //
 const getText = global.utils.getText;
 
-// ———————————————— AUTO RESTART ———————————————— //
 if (config.autoRestart) {
 	const time = config.autoRestart.time;
 	if (!isNaN(time) && time > 0) {
@@ -218,32 +195,20 @@ if (config.autoRestart) {
 
 (async () => {
 	// ———————————————— SETUP MAIL ———————————————— //
-	const { gmailAccount } = config.credentials;
-	const { email, clientId, clientSecret, refreshToken } = gmailAccount;
-	const OAuth2 = google.auth.OAuth2;
-	const OAuth2_client = new OAuth2(clientId, clientSecret);
-	OAuth2_client.setCredentials({ refresh_token: refreshToken });
-	let accessToken;
-	try {
-		accessToken = await OAuth2_client.getAccessToken();
-	}
-	catch (err) {
-		throw new Error(getText("Goat", "googleApiTokenExpired"));
-	}
-	const transporter = nodemailer.createTransport({
-		host: 'smtp.gmail.com',
-		service: 'Gmail',
-		auth: {
-			type: 'OAuth2',
-			user: email,
-			clientId,
-			clientSecret,
-			refreshToken,
-			accessToken
-		}
-	});
+	const { gmailAccount } = config.credentials || {};
+	const { email, clientId, clientSecret, refreshToken } = gmailAccount || {};
 
-	async function sendMail({ to, subject, text, html, attachments }) {
+	if (email && clientId && clientSecret && refreshToken) {
+		const OAuth2 = google.auth.OAuth2;
+		const OAuth2_client = new OAuth2(clientId, clientSecret);
+		OAuth2_client.setCredentials({ refresh_token: refreshToken });
+		let accessToken;
+		try {
+			accessToken = await OAuth2_client.getAccessToken();
+		}
+		catch (err) {
+			console.log("⚠ Gmail API token invalid or expired, skipping Gmail features");
+		}
 		const transporter = nodemailer.createTransport({
 			host: 'smtp.gmail.com',
 			service: 'Gmail',
@@ -256,20 +221,19 @@ if (config.autoRestart) {
 				accessToken
 			}
 		});
-		const mailOptions = {
-			from: email,
-			to,
-			subject,
-			text,
-			html,
-			attachments
-		};
-		const info = await transporter.sendMail(mailOptions);
-		return info;
-	}
 
-	global.utils.sendMail = sendMail;
-	global.utils.transporter = transporter;
+		async function sendMail({ to, subject, text, html, attachments }) {
+			const mailOptions = { from: email, to, subject, text, html, attachments };
+			return await transporter.sendMail(mailOptions);
+		}
+
+		global.utils.sendMail = sendMail;
+		global.utils.transporter = transporter;
+	} else {
+		console.log("⚠ Gmail API disabled: missing credentials");
+		global.utils.sendMail = () => Promise.resolve("Gmail disabled");
+		global.utils.transporter = null;
+	}
 
 	// ———————————————— CHECK VERSION ———————————————— //
 	const { data: { version } } = await axios.get("https://raw.githubusercontent.com/ntkhang03/Goat-Bot-V2/main/package.json");
@@ -282,9 +246,11 @@ if (config.autoRestart) {
 			colors.hex("#eb6a07", version),
 			colors.hex("#eb6a07", "node update")
 		));
+
 	// —————————— CHECK FOLDER GOOGLE DRIVE —————————— //
 	const parentIdGoogleDrive = await utils.drive.checkAndCreateParentFolder("GoatBot");
 	utils.drive.parentID = parentIdGoogleDrive;
+
 	// ———————————————————— LOGIN ———————————————————— //
 	require(`./bot/login/login${NODE_ENV === 'development' ? '.dev.js' : '.js'}`);
 })();
@@ -294,9 +260,9 @@ function compareVersion(version1, version2) {
 	const v2 = version2.split(".");
 	for (let i = 0; i < 3; i++) {
 		if (parseInt(v1[i]) > parseInt(v2[i]))
-			return 1; // version1 > version2
+			return 1;
 		if (parseInt(v1[i]) < parseInt(v2[i]))
-			return -1; // version1 < version2
+			return -1;
 	}
-	return 0; // version1 = version2
-}
+	return 0;
+	}
